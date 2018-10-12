@@ -7,5 +7,5 @@ This is forked from: https://android.googlesource.com/platform/tools/base/+/stud
 ## How to run
 
 ```sh
-./gradlew run --args='-c -in $inputDir -out $outputDir'
+./gradlew run "--args=-c -in $inputDir -out $outputDir"
 ```
