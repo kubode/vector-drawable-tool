@@ -1,1 +1,1 @@
-include ':vector-drawable-tool'
+include ':vector-drawable-tool', ':checker'

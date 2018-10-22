@@ -12,5 +12,15 @@ dependencies {
 }
 
 run.doLast {
-    print run.args.findIndexOf { it == "-out" }
+    int indexOfOutParam = run.args.findIndexOf { it == "-out" }
+    if (indexOfOutParam == -1) return
+    String outDirParam = run.args[indexOfOutParam + 1]
+    File outDir = new File(outDirParam)
+    outDir.listFiles().each { File file ->
+        String newFileName = file.name
+                .toLowerCase()
+                .replaceAll("-", "_")
+                .replaceAll("^([0-9])", "_\$0")
+        file.renameTo(new File(outDir, newFileName))
+    }
 }
