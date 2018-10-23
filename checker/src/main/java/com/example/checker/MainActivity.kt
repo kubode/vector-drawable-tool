@@ -2,9 +2,9 @@ package com.example.checker
 
 import android.content.Context
 import android.os.Bundle
-import android.support.annotation.DrawableRes
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.RecyclerView
+import androidx.annotation.DrawableRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById<RecyclerView>(R.id.recycler_view).apply {
+        findViewById<androidx.recyclerview.widget.RecyclerView>(R.id.recycler_view).apply {
             adapter = IconsAdapter(context)
         }
     }
@@ -22,7 +22,7 @@ class MainActivity : AppCompatActivity() {
 
 class IconViewHolder(
         parent: ViewGroup
-) : RecyclerView.ViewHolder(
+) : androidx.recyclerview.widget.RecyclerView.ViewHolder(
         LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
 ) {
     private val imageView: ImageView = itemView.findViewById(R.id.image_view)
@@ -35,7 +35,7 @@ class IconViewHolder(
         }
 }
 
-class IconsAdapter(context: Context) : RecyclerView.Adapter<IconViewHolder>() {
+class IconsAdapter(context: Context) : androidx.recyclerview.widget.RecyclerView.Adapter<IconViewHolder>() {
     private val iconResourceIds: List<Int>
 
     init {

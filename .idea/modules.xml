@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/checker/checker.iml" filepath="$PROJECT_DIR$/checker/checker.iml" />
       <module fileurl="file://$PROJECT_DIR$/vector-drawable-tool.iml" filepath="$PROJECT_DIR$/vector-drawable-tool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/vector-drawable-tool/vector-drawable-tool-vector-drawable-tool.iml" filepath="$PROJECT_DIR$/vector-drawable-tool/vector-drawable-tool-vector-drawable-tool.iml" />
     </modules>
   </component>
 </project>
