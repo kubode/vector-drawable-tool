@@ -21,9 +21,9 @@ class MainActivity : AppCompatActivity() {
 }
 
 class IconViewHolder(
-        parent: ViewGroup
+    parent: ViewGroup
 ) : RecyclerView.ViewHolder(
-        LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
+    LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
 ) {
     private val imageView: ImageView = itemView.findViewById(R.id.image_view)
 
@@ -41,15 +41,13 @@ class IconsAdapter(context: Context) : RecyclerView.Adapter<IconViewHolder>() {
     init {
         val typedArray = context.resources.obtainTypedArray(R.array.icons)
         iconResourceIds = (0 until typedArray.length())
-                .map { typedArray.getResourceId(it, -1) }
+            .map { typedArray.getResourceId(it, -1) }
         typedArray.recycle()
     }
 
     override fun getItemCount() = iconResourceIds.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): IconViewHolder {
-        return IconViewHolder(parent)
-    }
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IconViewHolder(parent)
 
     override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
         holder.resourceId = iconResourceIds[position]
