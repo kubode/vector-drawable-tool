@@ -8,7 +8,7 @@ project.distZip.baseName = archivesBaseName
 project.startScripts.applicationName = archivesBaseName
 
 dependencies {
-    implementation 'com.android.tools:sdk-common:26.2.0'
+    implementation 'com.android.tools:sdk-common:26.2.1'
 }
 
 run.doLast {
