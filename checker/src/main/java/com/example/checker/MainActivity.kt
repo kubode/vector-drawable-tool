@@ -5,7 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.Toast
+import android.widget.TextView
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -16,62 +16,48 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<RecyclerView>(R.id.recycler_view).apply {
-            adapter = IconsAdapter(
-                context,
-                onItemClick = { drawableResId ->
-                    Toast.makeText(
-                        this@MainActivity,
-                        resources.getResourceName(drawableResId),
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-            )
+            adapter = IconsAdapter(context)
         }
     }
 }
 
-class IconViewHolder(
-    parent: ViewGroup,
-    onItemClick: (Int) -> Unit
-) : RecyclerView.ViewHolder(
+class IconViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
 ) {
-    private val imageView: ImageView = itemView.findViewById(R.id.image_view)
+    private val iconImageView: ImageView = itemView.findViewById(R.id.icon_image_view)
+    private val nameTextView: TextView = itemView.findViewById(R.id.name_text_view)
 
-    init {
-        itemView.setOnClickListener {
-            onItemClick(resourceId)
-        }
-    }
-
-    @DrawableRes
-    var resourceId: Int = -1
+    var iconResource: IconResource? = null
         set(value) {
             field = value
-            imageView.setImageResource(value)
+            iconImageView.setImageResource(value?.id ?: -1)
+            nameTextView.text = value?.name
         }
 }
 
-class IconsAdapter(
-    context: Context,
-    private val onItemClick: (Int) -> Unit
-) : RecyclerView.Adapter<IconViewHolder>() {
+data class IconResource(
+    @DrawableRes val id: Int,
+    val name: String
+)
 
-    private val iconResourceIds: List<Int>
+class IconsAdapter(context: Context) : RecyclerView.Adapter<IconViewHolder>() {
+
+    private val iconResources: List<IconResource>
 
     init {
         val typedArray = context.resources.obtainTypedArray(R.array.icons)
-        iconResourceIds = (0 until typedArray.length())
+        iconResources = (0 until typedArray.length())
             .map { typedArray.getResourceId(it, -1) }
+            .map { IconResource(it, context.resources.getResourceEntryName(it)) }
+            .sortedBy { it.name }
         typedArray.recycle()
     }
 
-    override fun getItemCount() = iconResourceIds.count()
+    override fun getItemCount() = iconResources.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-        IconViewHolder(parent, onItemClick)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IconViewHolder(parent)
 
     override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
-        holder.resourceId = iconResourceIds[position]
+        holder.iconResource = iconResources[position]
     }
 }
