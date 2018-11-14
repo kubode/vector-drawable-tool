@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
@@ -15,17 +16,33 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById<RecyclerView>(R.id.recycler_view).apply {
-            adapter = IconsAdapter(context)
+            adapter = IconsAdapter(
+                context,
+                onItemClick = { drawableResId ->
+                    Toast.makeText(
+                        this@MainActivity,
+                        resources.getResourceName(drawableResId),
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            )
         }
     }
 }
 
 class IconViewHolder(
-    parent: ViewGroup
+    parent: ViewGroup,
+    onItemClick: (Int) -> Unit
 ) : RecyclerView.ViewHolder(
     LayoutInflater.from(parent.context).inflate(R.layout.item_icon, parent, false)
 ) {
     private val imageView: ImageView = itemView.findViewById(R.id.image_view)
+
+    init {
+        itemView.setOnClickListener {
+            onItemClick(resourceId)
+        }
+    }
 
     @DrawableRes
     var resourceId: Int = -1
@@ -35,7 +52,11 @@ class IconViewHolder(
         }
 }
 
-class IconsAdapter(context: Context) : RecyclerView.Adapter<IconViewHolder>() {
+class IconsAdapter(
+    context: Context,
+    private val onItemClick: (Int) -> Unit
+) : RecyclerView.Adapter<IconViewHolder>() {
+
     private val iconResourceIds: List<Int>
 
     init {
@@ -47,7 +68,8 @@ class IconsAdapter(context: Context) : RecyclerView.Adapter<IconViewHolder>() {
 
     override fun getItemCount() = iconResourceIds.count()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = IconViewHolder(parent)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
+        IconViewHolder(parent, onItemClick)
 
     override fun onBindViewHolder(holder: IconViewHolder, position: Int) {
         holder.resourceId = iconResourceIds[position]
